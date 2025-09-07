@@ -17,7 +17,7 @@ import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
 
-dotenv.config(); // load .env file
+dotenv.config(); // Load .env file
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -26,26 +26,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Middleware
-app.use(express.json()); // for parsing application/json
+app.use(express.json()); // Parse JSON
 
-// ✅ CORS setup with allowed origins
-const allowedOrigins = [
-  "http://localhost:5173",                 // Local frontend (dev)
-  process.env.CLIENT_URL                   // Deployed frontend (from .env)
-];
-
+// ✅ Open CORS for testing (allows everyone)
 app.use(cors({
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like Postman)
-    if (!origin) return callback(null, true);
-
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
+  origin: "*", // Allow requests from any origin
+  credentials: true
 }));
 
 // Serve uploads folder
